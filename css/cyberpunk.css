@@ -10836,6 +10836,7 @@ article.article .content pre {
 }
 article.article .content code {
   padding: 0;
+  color: #5e81ac;
   background: transparent;
   overflow-wrap: break-word;
 }
