@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Border的四种求法 - bn&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="bn&#039;s Blog"><meta name="msapplication-TileImage" content="/img/favicon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="bn&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="“我问你，border 有四种求法*，你知道么？” *Border 的四种求法：指毛估，哈希，KMP 和 runs，其中最后一种求法极其罕见。"><meta property="og:type" content="blog"><meta property="og:title" content="Border的四种求法"><meta property="og:url" content="https://big-news.cn/2021/03/10/Border%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%B1%82%E6%B3%95/"><meta property="og:site_name" content="bn&#039;s Blog"><meta property="og:description" content="“我问你，border 有四种求法*，你知道么？” *Border 的四种求法：指毛估，哈希，KMP 和 runs，其中最后一种求法极其罕见。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://big-news.cn/pictures/cover/thumbnail.svg"><meta property="article:published_time" content="2021-03-10T06:50:00.000Z"><meta property="article:modified_time" content="2021-03-10T14:27:43.124Z"><meta property="article:author" content="ce-amtic"><meta property="article:tag" content="字符串"><meta property="article:tag" content="KMP"><meta property="article:tag" content="runs"><meta property="article:tag" content="Lyndon分解"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/pictures/cover/thumbnail.svg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://big-news.cn/2021/03/10/Border%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%B1%82%E6%B3%95/"},"headline":"bn's Blog","image":[],"datePublished":"2021-03-10T06:50:00.000Z","dateModified":"2021-03-10T14:27:43.124Z","author":{"@type":"Person","name":"ce-amtic"},"description":"“我问你，border 有四种求法*，你知道么？” *Border 的四种求法：指毛估，哈希，KMP 和 runs，其中最后一种求法极其罕见。"}</script><link rel="canonical" href="https://big-news.cn/2021/03/10/Border%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%B1%82%E6%B3%95/"><link rel="alternate" href="/atom.xml" title="bn&#039;s Blog" type="application/atom+xml"><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"><link rel="stylesheet" href="https://fonts.loli.net/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><script>var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?d2bd007ca786af68050dc4eaf58eecdc";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();</script><!--!--><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css"><script src="https://cdnjs.loli.net/ajax/libs/pace/1.0.2/pace.min.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="bn&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/friends.html">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Fork Me On GitHub" href="https://github.com/ce-amtic/ce-amtic.github.io"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2021-03-10T06:50:00.000Z" title="2021-3-10 14:50:00">2021-03-10</time>发表</span><span class="level-item"><time dateTime="2021-03-10T14:27:43.124Z" title="2021-3-10 22:27:43">2021-03-10</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/OI%E7%AC%94%E8%AE%B0/">OI笔记</a></span><span class="level-item">12 分钟读完 (大约1862个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">Border的四种求法</h1><div class="content"><p>“我问你，border 有四种求法*，你知道么？”</p>
+<p>*Border 的四种求法：指毛估，哈希，KMP 和 runs，其中最后一种求法极其罕见。</p>
+<a id="more"></a>
+
+<h3 id="Peroid-amp-Border"><a href="#Peroid-amp-Border" class="headerlink" title="Peroid &amp; Border"></a>Peroid &amp; Border</h3><ul>
+<li>（Border）我们定义串 $s$ 的一个非空严格前缀 $s[:k]$ 是 $s$ 的 border，当且仅当 $s[:k]=s[|s|-k+1:]$。注意这里 $k\in[1,|s|)$。</li>
+</ul>
+<p>Border 具有一个优良的性质：$s$ 的一个前缀在 $s$ 中的全部出现位置，即是其在 $s$ 的失配树上的子树中的所有节点。而实际上，失配树上一个节点的祖先，即是这个节点的最长 border 所代指的前缀。</p>
+<p>这样我们可以利用这个性质解决一系列单模式匹配问题，唯一的需求是快速建立失配树的结构。</p>
+<p>这可以用 KMP 算法来解决：维护当前匹配的最长 border $p$，考虑扩展出一个字符 $c$ 之后，只需要验证 $p$ 到根的这一段路径上，有没有一个节点的下一个字符是 $c$。我们暴力跳失配树，容易发现每条树边只会被经过 $O(1)$ 次，因此总复杂度是均摊 $O(n)$。</p>
+<p>注意这里的 border 针对的是同一个串而言，当然我们也可以在不同串之间定义 border，这就出现了 AC 自动机（多模式匹配）和 KMP 自动机（可回撤匹配）等一系列结构。</p>
+<p>Border 在扩展 KMP 算法中还体现了另一个应用，因为不是特别有启发性所以这里跳过。</p>
+<ul>
+<li>（周期）我们定义一个整数 $r\in [1,|s|]$ 是串 $s$ 的周期，当且仅当 $\forall i\in[1,|s|-r]$，满足 $s[i]=s[i+r]$。我们称一个串所有周期中最小的那个为 $s$ 的最小周期，记作 $per(s)$。</li>
+</ul>
+<p>接下来证明一个结论：“$s[:k]$ 是 $s$ 的 border”等价于“$|s|-k$ 是 $s$ 的周期”。</p>
+<p>考虑先证充分性，可以发现 $2k\le |s|$ 的情况是 trivial 的。我们考虑 $2k &gt; |s|$，此时设 $s=XA$，其中 $|A|=k$ 是 $s$ 的 border，可以发现 $X$ 必然是 $A$ 的严格前缀，那么去掉 $X$ 之后，可以转化为同样的问题，最后只会剩下 $X$ 的一段前缀。于是充分性得证，不难发现必要性也同理。</p>
+<p>这意味着，一个串的所有周期和它的所有 border 是等价的集合。</p>
+<p>关于周期，我们知道一些重要的结论：</p>
+<ul>
+<li>（Weak Periodicity Lemma）如果 $p,q$ 都是 $s$ 的周期，且满足 $p+q\le |s|$，那么 $(p,q)$ 也是 $s$ 的周期。</li>
+<li>（Periodicity Lemma）如果 $p,q$ 都是 $s$ 的周期，且满足 $p+q-(p,q)\le |s|$，那么 $(p,q)$ 也是 $s$ 的周期。</li>
+</ul>
+<p>这意味这周期的出现是及其规律的。或者换个角度讲，border 的出现也是非常规律的！</p>
+<p>可以发现如下规律：</p>
+<ul>
+<li>对于串 $a,b$，满足 $2|a|\ge b$，则 $a$ 在 $b$ 中的匹配位置构成一个公差为 $per(a)$ 的等差数列。</li>
+<li>对于串 $s$，$s$ 的所有长度大于等于 $\frac{|s|}{2}$ 的 border 构成一个等差数列。</li>
+<li>对于串 $s$，$s$ 的所有 border 排序后形成 $\log |s|$ 段等差数列。</li>
+</ul>
+<p>对于第一和第二个结论，可以通过 WPL 简单证明；而第三个结论只需再利用 “border 的 border 还是 border”这个性质即可证明。</p>
+<h3 id="Runs-amp-Lyndon-Factorize"><a href="#Runs-amp-Lyndon-Factorize" class="headerlink" title="Runs &amp; Lyndon Factorize"></a>Runs &amp; Lyndon Factorize</h3><p>我们考虑从另一个角度理解周期，引入 runs 的概念：</p>
+<ul>
+<li>（Runs）我们定义一个三元组 $(l,r,p)$ 是 $s$ 的一个 run，当且仅当 $per(s[l:r])=p$，且 $2p\le r-l+1$，且 $s[l:r]$ 是极长的一段最小周期为 $p$ 的串。特别的，实数 $\frac{r-l+1}{p}$ 称作一个 run 的指数。</li>
+</ul>
+<p>可以发现这个东西和周期联系密切，它的本质即是对极长严格周期串（即满足 $2per(s)\le |s|$）按照它们的最小周期分类。</p>
+<ul>
+<li>（The Runs Theorem）记 $\rho(n)$ 表示长为 $n$ 的串至多含有的 run 的数量，$\sigma(n)$ 表示长为 $n$ 的串所有 run 的指数和的最大值，那么有 $\rho(n)&lt;n,\sigma(n)\le 3n-3$。</li>
+</ul>
+<p>这意味着我们可以求出一个串的所有 run，考虑怎么求。</p>
+<ul>
+<li>（Lyndon 串）设 $&lt;_\iota$ 是比较运算符，其中 $\iota=0/1$，分别对应两种相反的比较，这里令 $&lt;_0\Leftrightarrow&lt;,&lt;_1\Leftrightarrow &gt;$。我们称 $s$ 是关于 $&lt;_\iota$ 的 Lyndon 串，当且仅当 $\forall i\in [2,|s|]$，满足 $s&lt;_\iota s[i:|s|]$。</li>
+<li>（Lyndon 分解）称 $a_1a_2…a_n=s$ 是 $s$ 关于 $&lt;_\iota$ 的 Lyndon 分解，当且仅当所有 $a_i$ 均是关于 $&lt;_\iota$ 的 Lyndon 串，且 $a_i\not&lt;_\iota a_{i+1}$。可以证明，一个串的 Lyndon 分解存在且唯一。</li>
+<li>（Lyndon Root）称 $\lambda=s[l_\lambda:r_\lambda]$ 是一个 run $u=(l,r,p)$ 关于 $&lt;_\iota$ 的 Lyndon Root，当且仅当 $[l_\lambda:r_\lambda]\subseteq [l,r]$，且 $\lambda$ 是一个 Lyndon 串。</li>
+</ul>
+<p>考虑反过来求每个 Lyndon Root。</p>
+<p>我们把串 Lyndon 分解，然后枚举一个 $i$，设 $ed[i]$ 是这一段 Lyndon 分解的边界，那么以 $i$ 开头的 Lyndon 子串的右端点不会超过 $ed[i]$，一段 Lyndon Root 也必然是 $s[i:ed[i]]$ 的子串。</p>
+<p>我们从这里开始，二分哈希找到包含 $s[i:ed[i]]$ 的极长循环子串 $s[l:r]$。如果这段子串合法（满足 runs 的定义），那么就找到了一个 run。显然一个 $s[l:r]$ 可能被统计多次，我们应当取周期最小的那一次。</p>
+<p>如果对 $\iota=0/1$ 均做一遍这样的操作，我们就可以得到所有的 run。</p>
+<p>我们发现依赖 runs 具有的优良性质，可以解决一系列周期相关的问题以及 border 相关的问题。这种方法比 SAM 等常见处理办法更加简洁，在时间和空间上可以获得进一步的优化。</p>
+<p>但是这也是有局限的，因为 runs 无法表出非严格周期串，否则复杂度就错了。</p>
+<h3 id="一道栗题"><a href="#一道栗题" class="headerlink" title="一道栗题"></a>一道栗题</h3><article class="message is-primary" style="font-size:inherit"><div class="message-body">
+
+<p>给定一个仅包含小写拉丁字母的字符串 $s$。有 $q$ 次询问，每次询问形如 $(l,r)$，表示询问 $s[l:r]$ 这一段子串是否可以被表示成 $s[l:r]=X^kX’$ 的形式，其中 $X$ 是任意字符串，$X’$ 是 $X$ 的可空前缀，$k\ge 2$。</p>
+<p>对于每次询问，如果这样的 $X$ 存在，输出最短的 $X$ 的长度；否则，输出 $-1$。</p>
+<p>$|s|\le 10^6$</p>
+</div></article>
+
+<p>显然求 $per(s[l:r])$ 等价于求 $s[l:r]$ 的最长 border，直接 KMP 即可 $O(q|s|)$。</p>
+<p>考虑求出 $s$ 的 runs，那么每次询问相当于一个矩形取 $\min$，直接离线二维数点即可，复杂度 $O(|s|\log |s|+q\log |s|)$。</p>
+<p>需要特别说明的是，如果没有 $k\ge 2$ 的限制，那么本题就是<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4482">「BJWC2018」Border 的四种求法</a>，解法也不再这样简单。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li>《The Runs Theorem and Lyndon Tree》杨骏昭、徐翊轩、陈孙立，WC2019 讲稿</li>
+</ul>
+<p>相关题目：</p>
+<ol>
+<li>暂无来源</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Border的四种求法</p><p><a href="https://big-news.cn/2021/03/10/Border的四种求法/">https://big-news.cn/2021/03/10/Border的四种求法/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>ce-amtic</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2021-03-10</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2021-03-10</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="" rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a><a class="link-muted mr-2" rel="tag" href="/tags/KMP/">KMP</a><a class="link-muted mr-2" rel="tag" href="/tags/runs/">runs</a><a class="link-muted mr-2" rel="tag" href="/tags/Lyndon%E5%88%86%E8%A7%A3/">Lyndon分解</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/01/22/%E5%90%8C%E4%BD%99%E6%95%B0%E8%AE%BA%E4%B9%B1%E8%AE%B2/"><span class="level-item">同余数论乱讲</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div class="content" id="valine-thread"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="https://cdnjs.loli.net/ajax/libs/valine/1.4.14/Valine.min.js"></script><script>new Valine({
+            el: '#valine-thread' ,
+            appId: "J8OJ7MUCd2S0T59f6kSUn4E7-gzGzoHsz",
+            appKey: "GToPzNfPvMfduDLYX58Pi03F",
+            placeholder: "说些什么...",
+            avatar: "mm",
+            
+            meta: ["nick","mail","link"],
+            pageSize: 10,
+            lang: "zh-CN",
+            
+            highlight: true,
+            
+            
+            
+            
+            
+            requiredFields: [],
+        });</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Peroid-amp-Border"><span class="level-left"><span class="none-display">1</span><span class="level-item">Peroid &amp; Border</span></span></a></li><li><a class="level is-mobile" href="#Runs-amp-Lyndon-Factorize"><span class="level-left"><span class="none-display">2</span><span class="level-item">Runs &amp; Lyndon Factorize</span></span></a></li><li><a class="level is-mobile" href="#一道栗题"><span class="level-left"><span class="none-display">3</span><span class="level-item">一道栗题</span></span></a></li><li><a class="level is-mobile" href="#参考"><span class="level-left"><span class="none-display">4</span><span class="level-item">参考</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">推荐阅读</h3><article class="media"><figure class="media-left"><a class="image" href="/2019/03/29/OI%E6%A8%A1%E6%9D%BF%E6%A2%B3%E7%90%86/"><img src="/pictures/cover/1.png" alt="OI模板梳理"></a></figure><div class="media-content"><p class="date"><time dateTime="2019-03-29T12:45:00.000Z">2019-03-29</time></p><p class="title"><a href="/2019/03/29/OI%E6%A8%A1%E6%9D%BF%E6%A2%B3%E7%90%86/">OI模板梳理</a></p><p class="categories"><a href="/categories/OI%E7%AC%94%E8%AE%B0/">OI笔记</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2020/08/07/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6%E5%86%8D%E5%9F%BA%E7%A1%80/"><img src="/pictures/cover/3.png" alt="组合数学再基础"></a></figure><div class="media-content"><p class="date"><time dateTime="2020-08-07T06:00:00.000Z">2020-08-07</time></p><p class="title"><a href="/2020/08/07/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6%E5%86%8D%E5%9F%BA%E7%A1%80/">组合数学再基础</a></p><p class="categories"><a href="/categories/OI%E7%AC%94%E8%AE%B0/">OI笔记</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2020/11/26/%E7%BD%AE%E6%8D%A2%E7%BE%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><img src="/pictures/cover/4.png" alt="置换群学习笔记"></a></figure><div class="media-content"><p class="date"><time dateTime="2020-11-26T13:39:00.000Z">2020-11-26</time></p><p class="title"><a href="/2020/11/26/%E7%BD%AE%E6%8D%A2%E7%BE%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">置换群学习笔记</a></p><p class="categories"><a href="/categories/OI%E7%AC%94%E8%AE%B0/">OI笔记</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2020/12/18/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><img src="/pictures/cover/5.png" alt="多项式学习笔记"></a></figure><div class="media-content"><p class="date"><time dateTime="2020-12-18T03:33:00.000Z">2020-12-18</time></p><p class="title"><a href="/2020/12/18/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">多项式学习笔记</a></p><p class="categories"><a href="/categories/OI%E7%AC%94%E8%AE%B0/">OI笔记</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2021/03/10/Border%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%B1%82%E6%B3%95/"><img src="/pictures/cover/thumbnail.svg" alt="Border的四种求法"></a></figure><div class="media-content"><p class="date"><time dateTime="2021-03-10T06:50:00.000Z">2021-03-10</time></p><p class="title"><a href="/2021/03/10/Border%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%B1%82%E6%B3%95/">Border的四种求法</a></p><p class="categories"><a href="/categories/OI%E7%AC%94%E8%AE%B0/">OI笔记</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="bn&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2021 ce-amtic</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7"><a class="link-muted" href="/port/index.html">Port</a>  |  <a class="link-muted" href="http://beian.miit.gov.cn/" target="_blank">鲁ICP备19035721号-1</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="fab fa-creative-commons-nc"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Share Alike" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="fab fa-creative-commons-sa"></i></a></p></div></div></div></div></footer><script src="https://cdnjs.loli.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script><script src="https://cdnjs.loli.net/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script><script src="https://cdnjs.loli.net/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'folded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdnjs.loli.net/ajax/libs/lightgallery/1.6.8/js/lightgallery.min.js" defer></script><script src="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdnjs.loli.net/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://cdnjs.loli.net/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
